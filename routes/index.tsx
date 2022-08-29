@@ -12,9 +12,8 @@ export default function Home() {
         alt="the fresh logo: a sliced lemon dripping with juice"
       />
       <p class={tw`my-6`}>
-        Welcome to `fresh`. I updated dis.
+        Welcome to muh site. I updated dis.
       </p>
-      <Counter start={3} />
     </div>
   );
 }
