@@ -12,7 +12,7 @@ export default function Home() {
         alt="the fresh logo: a sliced lemon dripping with juice"
       />
       <p class={tw`my-6`}>
-        Welcome to muh site. I updated dis.
+        Hi Ian.
       </p>
     </div>
   );
