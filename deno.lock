@@ -102,6 +102,8 @@
     "https://deno.land/x/ts_morph@16.0.0/mod.ts": "adba9b82f24865d15d2c78ef6074b9a7457011719056c9928c800f130a617c93",
     "https://deno.land/x/ts_morph@16.0.0/ts_morph.d.ts": "38668b0e3780282a56a805425494490b0045d1928bd040c47a94095749dab8c3",
     "https://deno.land/x/ts_morph@16.0.0/ts_morph.js": "9fc0f3d6a3997c2df023fabc4e529d2117d214ffd4fd04247ca2f56c4e9cd470",
+    "https://esm.sh/*@preact/signals-core@1.0.1": "c1ad0ae44ff1d2ce10eff2651eea9266313d4618ab98cc61c7037e104f015ca9",
+    "https://esm.sh/*@preact/signals@1.0.3": "e9c87724daa1713e5f1c34b09782c0d1b16d4288e331cc2a3b5c21aca66f27d7",
     "https://esm.sh/*preact-render-to-string@5.2.4": "c7b78a1de01e18e40faf2588abd16be0319c309adaa55d4884e28daaf0263579",
     "https://esm.sh/preact@10.11.0": "e888b244446037c56f1881173fb51d1f5fa7aae5599e6c5154619346a6a5094e",
     "https://esm.sh/preact@10.11.0/hooks": "2b8ec155eb8b87501663f074acff1d55a9114fa7d88f0b39da06c940af1ff736",
@@ -122,6 +124,14 @@
     "https://esm.sh/v107/twind@0.16.17/deno/sheets.js": "c504a460f5df2954f7334a821ef3ac9bedfc94dcc3f0dbf60af8d22f000391db",
     "https://esm.sh/v107/twind@0.16.17/deno/twind.js": "e42bab2b3622f13f826150079ddc44d68af6aa17052a03497cebea80aea930ad",
     "https://esm.sh/v107/twind@0.16.17/sheets/sheets.d.ts": "8c5392e418e291ad37417a757520ef4945c857460eda15cb57be4aedbb0024f2",
-    "https://esm.sh/v107/twind@0.16.17/twind.d.ts": "54763379010e8184469f76a76bf936221097fb930a49534ae00e2c41a948a70a"
+    "https://esm.sh/v107/twind@0.16.17/twind.d.ts": "54763379010e8184469f76a76bf936221097fb930a49534ae00e2c41a948a70a",
+    "https://esm.sh/v108/@preact/signals-core@1.0.1/X-ZS8q/deno/dist/signals-core.js": "57d28c7244247120ea3059eb14b74cca29d905728f7469d99eb2f9b65475518e",
+    "https://esm.sh/v108/@preact/signals-core@1.0.1/X-ZS8q/deno/signals-core.js": "0b0f3cf517d6e7881d004d840d95f07bd0cf687d4e30f02a3fe4307c3a0e5012",
+    "https://esm.sh/v108/@preact/signals-core@1.0.1/X-ZS8q/dist/signals-core": "d1a4e31aa27a012e56064e490291653c853e46b9aed515a27c5783b072313875",
+    "https://esm.sh/v108/@preact/signals-core@1.0.1/X-ZS8q/dist/signals-core.d.ts": "7a2bc0ea4bb4197fe888236017e1429cb3129ca64eb37146f11f102d9513c54d",
+    "https://esm.sh/v108/@preact/signals@1.0.3/X-ZS8q/deno/dist/signals.js": "8baf7e146e43223dd546a4f283b742bf5555370887de68d8ef8686d849cec173",
+    "https://esm.sh/v108/@preact/signals@1.0.3/X-ZS8q/deno/signals.js": "c2807ebadd1f0786d208bb474a5a879cdc2558ec130d6a3d2f38a4ca33726c96",
+    "https://esm.sh/v108/@preact/signals@1.0.3/X-ZS8q/dist/signals": "9955f23fdad2a381dc0d163ec1d8c6dc95a418275da0ef9adc28b3d29d246e79",
+    "https://esm.sh/v108/@preact/signals@1.0.3/X-ZS8q/dist/signals.d.ts": "f4fbae092f6622b348cc45503aef1a2076ea0c4bf37ab78a691a77220217a027"
   }
 }
