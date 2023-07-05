@@ -17,11 +17,9 @@ export const log = ([
     uuid: "f4b77ab6-d090-4237-a8f7-5dc3595fa543",
     show: true,
   },
-] as const).toSorted((a, b) => {
-  const aDate = new Date(a.date);
-  const bDate = new Date(b.date);
-  if (aDate < bDate) return 1;
-  if (aDate > bDate) return -1;
+] as const).map((x) => ({ ...x, date: new Date(x.date) })).toSorted((a, b) => {
+  if (a < b) return 1;
+  if (a > b) return -1;
   return 0;
 });
 

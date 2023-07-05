@@ -6,7 +6,7 @@ export default function Home() {
       {log.map((entry) => (
         <p class="space-x-2">
           <span class="text-xs">
-            {new Date(entry.date).toLocaleDateString("en-us", {
+            {entry.date.toLocaleDateString("en-us", {
               year: "numeric",
               month: "long",
               day: "numeric",

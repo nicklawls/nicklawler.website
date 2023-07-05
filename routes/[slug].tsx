@@ -21,7 +21,7 @@ export default function EntryPage({ data: post }: PageProps<Entry>) {
       <div>
         <h1 class="text-5xl font-bold">{post.title}</h1>
         <time class="text-gray-500">
-          {new Date(post.date).toLocaleDateString("en-us", {
+          {post.date.toLocaleDateString("en-us", {
             year: "numeric",
             month: "long",
             day: "numeric",
