@@ -9,7 +9,7 @@ const pages = [
     show: true,
   },
   {
-    label: "F.A.Q",
+    label: "F.A.Q.",
     pathname: "/faq",
     show: true,
   },
