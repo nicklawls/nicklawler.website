@@ -35,10 +35,14 @@ export async function getEntry(
     return null;
   }
 
-  const content = await Deno.readTextFile(join("./posts", `${slug}.md`));
+  try {
+    const content = await Deno.readTextFile(join("./posts", `${slug}.md`));
 
-  return {
-    content,
-    ...entry,
-  };
+    return {
+      content,
+      ...entry,
+    };
+  } catch {
+    return null;
+  }
 }
