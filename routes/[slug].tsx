@@ -12,11 +12,20 @@ export const handler: Handlers<Entry> = {
   },
 };
 
+const CUSTOM_CSS = `${CSS}
+    .markdown-body ul {
+    list-style: disc;
+    }
+    .markdown-body ol {
+    list-style: numeric;
+    }
+`;
+
 export default function EntryPage({ data: post }: PageProps<Entry>) {
   return (
     <>
       <Head>
-        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <style dangerouslySetInnerHTML={{ __html: CUSTOM_CSS }} />
       </Head>
       <div>
         <h1 class="text-5xl font-bold">{post.title}</h1>
