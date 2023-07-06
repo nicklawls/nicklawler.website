@@ -1,8 +1,13 @@
+import { Head } from "$fresh/runtime.ts";
 import { log } from "../log.ts";
 
 export default function Home() {
   return (
-    <div class="flex flex-col space-y-5">
+    <>
+      <Head>
+        <title>Nick Lawler Web Site</title>
+      </Head>
+      <div class="flex flex-col space-y-5">
       {log.map((entry) => (
         <p class="space-x-2">
           <span class="text-xs">
@@ -18,5 +23,6 @@ export default function Home() {
         </p>
       ))}
     </div>
+    </>
   );
 }

@@ -25,6 +25,7 @@ export default function EntryPage({ data: post }: PageProps<Entry>) {
   return (
     <>
       <Head>
+        <title>{post.title}</title>
         <style dangerouslySetInnerHTML={{ __html: CUSTOM_CSS }} />
       </Head>
       <div>
