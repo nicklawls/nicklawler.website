@@ -18,8 +18,8 @@ export const log = ([
     show: true,
   },
 ] as const).map((x) => ({ ...x, date: new Date(x.date) })).toSorted((a, b) => {
-  if (a < b) return 1;
-  if (a > b) return -1;
+  if (a.date < b.date) return 1;
+  if (a.date > b.date) return -1;
   return 0;
 });
 
