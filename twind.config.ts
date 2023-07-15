@@ -14,4 +14,4 @@ export default {
       },
     },
   },
-} as Options;
+} satisfies Options;

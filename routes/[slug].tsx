@@ -14,12 +14,16 @@ export const handler: Handlers<Entry> = {
 };
 
 const CUSTOM_CSS = `${CSS}
-    .markdown-body ul {
-    list-style: disc;
-    }
-    .markdown-body ol {
-    list-style: numeric;
-    }
+  .markdown-body ul {
+      list-style: disc;
+  }
+  .markdown-body ol {
+      list-style: numeric;
+  }
+  .markdown-body {
+    --color-canvas-default: auto;
+    --color-fg-default: auto;
+  }
 `;
 
 export default function EntryPage({ data: post }: PageProps<Entry>) {
@@ -41,9 +45,15 @@ export default function EntryPage({ data: post }: PageProps<Entry>) {
             })}
           </time>
           <div
-            class="mt-8 markdown-body"
-            dangerouslySetInnerHTML={{ __html: render(post.content) }}
-          />
+            data-color-mode="auto"
+            data-light-theme="light"
+            data-dark-theme="dark"
+          >
+            <div
+              class="mt-8 markdown-body"
+              dangerouslySetInnerHTML={{ __html: render(post.content) }}
+            />
+          </div>
         </div>
       </div>
     </>
