@@ -3,7 +3,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { Entry, getEntry } from "../log.ts";
 import { CSS, render } from "$gfm";
 import { Head } from "$fresh/runtime.ts";
-import { Header } from "../components/Header.tsx";
+import { Header, pages } from "../components/Header.tsx";
 
 export const handler: Handlers<Entry> = {
   async GET(_req, ctx) {
@@ -26,19 +26,19 @@ const CUSTOM_CSS = `${CSS}
   }
 `;
 
-export default function EntryPage({ data: post }: PageProps<Entry>) {
+export default function EntryPage({ data: entry }: PageProps<Entry>) {
   return (
     <>
       <Head>
-        <title>{post.title}</title>
+        <title>{entry.title}</title>
         <style dangerouslySetInnerHTML={{ __html: CUSTOM_CSS }} />
       </Head>
       <div class="flex flex-col space-y-8">
-        <Header selectedPathname="/" title={false} />
+        <Header selectedPathname={pages.index.pathname} title={false} />
         <div>
-          <h1 class="text-5xl font-bold">{post.title}</h1>
+          <h1 class="text-5xl font-bold">{entry.title}</h1>
           <time class="text-gray-500">
-            {post.date.toLocaleDateString("en-us", {
+            {entry.date.toLocaleDateString("en-us", {
               year: "numeric",
               month: "long",
               day: "numeric",
@@ -51,7 +51,7 @@ export default function EntryPage({ data: post }: PageProps<Entry>) {
           >
             <div
               class="mt-8 markdown-body"
-              dangerouslySetInnerHTML={{ __html: render(post.content) }}
+              dangerouslySetInnerHTML={{ __html: render(entry.content) }}
             />
           </div>
         </div>

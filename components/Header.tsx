@@ -1,23 +1,23 @@
 import { tw } from "twind";
 
-import title from "../title.ts";
+import { title } from "../title.ts";
 
-export const pages = [
-  {
+export const pages = {
+  index: {
     label: "Dev Log",
     pathname: "/",
     show: true,
   },
-  {
+  faq: {
     label: "F.A.Q.",
     pathname: "/faq",
     show: true,
   },
-  {
-    label: "Stannery",
-    pathname: "/stans",
+  links: {
+    label: "Links",
+    pathname: "/links",
   },
-];
+} as const;
 
 export const Header = (
   { title: hasTitle = true, selectedPathname }: {
@@ -27,7 +27,7 @@ export const Header = (
 ) => (
   <div class="flex flex-col space-y-5">
     <div class="flex flex-row space-x-10 text-xl">
-      {pages.filter((p) => p.show).map((p) => (
+      {Object.values(pages).filter((p) => "show" in p && p.show).map((p) => (
         <a
           class={tw(
             "hover:underline",
