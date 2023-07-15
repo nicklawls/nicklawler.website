@@ -1,12 +1,13 @@
 import { Head } from "$fresh/runtime.ts";
 import { Header } from "../components/Header.tsx";
 import { log } from "../log.ts";
+import title from "../title.ts";
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Nick Lawler Web Site</title>
+        <title>{title}</title>
       </Head>
       <div class="flex flex-col space-y-5">
         <Header />
