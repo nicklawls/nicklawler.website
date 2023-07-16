@@ -20,7 +20,7 @@ export default function FaqPage() {
         <title>{`F.A.Q - ${SITE_TITLE}`}</title>
       </Head>
       <Header selectedPathname={PAGES.faq.pathname} title={SITE_TITLE} />
-      <main class="space-y-10">
+      <main class="space-y-12">
         <div>
           <Q>What is this site?</Q>
           <A>The software development weblog of Nick Lawler.</A>
@@ -28,7 +28,7 @@ export default function FaqPage() {
         <div>
           <Q>Who is Nick Lawler?</Q>
           <A>
-            Software Engineer on the{" "}
+            That would be me, a software engineer on the{" "}
             <a
               {...link}
               href="https://www.extrahop.com"
@@ -39,10 +39,12 @@ export default function FaqPage() {
           </A>
         </div>
         <div>
-          <Q>What's the best way to get a hold of Nick?</Q>
+          <Q>
+            What's the best way to get a hold of you with questions or feedback?
+          </Q>
           <A>
             Email <i>nick</i> "at" this site's domain, or comment on the
-            <br/>
+            <br />
             <a
               {...link}
               href="https://github.com/nicklawls/nicklawler.website"
