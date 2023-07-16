@@ -1,16 +1,16 @@
 import { Head } from "$fresh/runtime.ts";
 import { Header, pages } from "../components/Header.tsx";
 import { entries } from "../log.ts";
-import { title } from "../title.ts";
+import { SITE_TITLE } from "../title.ts";
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{SITE_TITLE}</title>
       </Head>
       <div class="flex flex-col space-y-5">
-        <Header selectedPathname={pages.index.pathname} title={title} />
+        <Header selectedPathname={pages.index.pathname} title={SITE_TITLE} />
         {entries.map((entry) => (
           <p class="space-x-2">
             <span class="text-xs">
