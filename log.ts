@@ -1,36 +1,39 @@
 import { join } from "path";
 
-const entries = {
-  "hello-world": {
+export const entries = ([
+  {
+    slug: "hello-world",
     title: "Hello World",
     date: new Date("7-4-2023"),
     file: "hello-world.md",
     show: true,
   },
-  "hello-world-2": {
+  {
+    slug: "hello-world-2",
     title: "Hello World 2",
     date: new Date("7-6-2023"),
     file: "hello-world-2.md",
     show: true,
   },
-} as const;
-
-export type EntryMeta = (typeof entries)[keyof typeof entries];
-
-export const log = Object.values(entries)
-  .filter((entry) => "show" in entry && entry.show)
+] as const).filter((entry) => "show" in entry && entry.show === true)
   .toSorted((a, b) => {
     if (a.date < b.date) return 1;
     if (a.date > b.date) return -1;
     return 0;
   });
 
+export type EntryMeta = (typeof entries)[number];
+
+const entriesBySlug = new Map<string, EntryMeta>(
+  entries.map((entry) => [entry.slug, entry]),
+);
+
 export type Entry = EntryMeta & { content: string };
 
 export async function getEntry(
   slug: string,
 ): Promise<Entry | null> {
-  const entry = (entries as { [slug in string]?: EntryMeta })[slug];
+  const entry = entriesBySlug.get(slug);
   if (entry === undefined) {
     return null;
   }
