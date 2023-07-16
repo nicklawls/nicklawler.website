@@ -10,7 +10,7 @@ export default function Home() {
         <title>{title}</title>
       </Head>
       <div class="flex flex-col space-y-5">
-        <Header selectedPathname={pages.index.pathname} />
+        <Header selectedPathname={pages.index.pathname} title={title} />
         {entries.map((entry) => (
           <p class="space-x-2">
             <span class="text-xs">

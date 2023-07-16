@@ -8,7 +8,7 @@ export default function FaqPage() {
       <Head>
         <title>{`F.A.Q - ${title}`}</title>
       </Head>
-      <Header selectedPathname={pages.faq.pathname} title={false} />
+      <Header selectedPathname={pages.faq.pathname} title={title} />
       <main>
         <h1>About</h1>
         <p>This is about page</p>

@@ -1,7 +1,5 @@
 import { tw } from "twind";
 
-import { title } from "../title.ts";
-
 export const pages = {
   index: {
     label: "Dev Log",
@@ -20,12 +18,12 @@ export const pages = {
 } as const;
 
 export const Header = (
-  { title: hasTitle = true, selectedPathname }: {
+  { title, selectedPathname }: {
     selectedPathname?: string;
-    title?: boolean;
+    title: string;
   },
 ) => (
-  <div class="flex flex-col space-y-5">
+  <div class="flex flex-col space-y-8">
     <div class="flex flex-row space-x-10 text-xl">
       {Object.values(pages).filter((p) => "show" in p && p.show).map((p) => (
         <a
@@ -39,10 +37,8 @@ export const Header = (
         </a>
       ))}
     </div>
-    {hasTitle && (
-      <h1 class="font-bold text-5xl">
+    <h1 class="font-bold text-5xl">
         {title}
       </h1>
-    )}
   </div>
 );

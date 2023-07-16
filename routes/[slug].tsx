@@ -33,10 +33,9 @@ export default function EntryPage({ data: entry }: PageProps<Entry>) {
         <title>{entry.title}</title>
         <style dangerouslySetInnerHTML={{ __html: CUSTOM_CSS }} />
       </Head>
-      <div class="flex flex-col space-y-8">
-        <Header selectedPathname={pages.index.pathname} title={false} />
+      <div class="flex flex-col space-y-3">
+        <Header selectedPathname={pages.index.pathname} title={entry.title} />
         <div>
-          <h1 class="text-5xl font-bold">{entry.title}</h1>
           <time class="text-gray-500">
             {entry.date.toLocaleDateString("en-us", {
               year: "numeric",
