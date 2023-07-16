@@ -1,5 +1,5 @@
 import { Head } from "$fresh/runtime.ts";
-import { Header, pages } from "../components/Header.tsx";
+import { Header, PAGES } from "../components/Header.tsx";
 import { SITE_TITLE } from "../title.ts";
 
 export default function FaqPage() {
@@ -8,7 +8,7 @@ export default function FaqPage() {
       <Head>
         <title>{`F.A.Q - ${SITE_TITLE}`}</title>
       </Head>
-      <Header selectedPathname={pages.faq.pathname} title={SITE_TITLE} />
+      <Header selectedPathname={PAGES.faq.pathname} title={SITE_TITLE} />
       <main>
         <h1>About</h1>
         <p>This is about page</p>

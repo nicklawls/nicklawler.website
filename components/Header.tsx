@@ -1,6 +1,6 @@
 import { tw } from "twind";
 
-export const pages = {
+export const PAGES = {
   index: {
     label: "Dev Log",
     pathname: "/",
@@ -25,7 +25,7 @@ export const Header = (
 ) => (
   <div class="flex flex-col space-y-8">
     <div class="flex flex-row space-x-10 text-xl">
-      {Object.values(pages).filter((p) => "show" in p && p.show).map((p) => (
+      {Object.values(PAGES).filter((p) => "show" in p && p.show).map((p) => (
         <a
           class={tw(
             "hover:underline",

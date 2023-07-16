@@ -3,7 +3,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { Entry, getEntry } from "../log.ts";
 import { CSS, render } from "$gfm";
 import { Head } from "$fresh/runtime.ts";
-import { Header, pages } from "../components/Header.tsx";
+import { Header, PAGES } from "../components/Header.tsx";
 
 export const handler: Handlers<Entry> = {
   async GET(_req, ctx) {
@@ -34,7 +34,7 @@ export default function EntryPage({ data: entry }: PageProps<Entry>) {
         <style dangerouslySetInnerHTML={{ __html: CUSTOM_CSS }} />
       </Head>
       <div class="flex flex-col space-y-3">
-        <Header selectedPathname={pages.index.pathname} title={entry.title} />
+        <Header selectedPathname={PAGES.index.pathname} title={entry.title} />
         <div>
           <time class="text-gray-500">
             {entry.date.toLocaleDateString("en-us", {

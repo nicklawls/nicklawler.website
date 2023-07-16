@@ -1,6 +1,6 @@
 import { join } from "path";
 
-export const entries = ([
+export const ENTRIES = ([
   {
     slug: "hello-world",
     title: "Hello World",
@@ -15,17 +15,18 @@ export const entries = ([
     file: "hello-world-2.md",
     show: true,
   },
-] as const).filter((entry) => "show" in entry && entry.show === true)
+] as const)
+  .filter((entry) => "show" in entry && entry.show === true)
   .toSorted((a, b) => {
     if (a.date < b.date) return 1;
     if (a.date > b.date) return -1;
     return 0;
   });
 
-export type EntryMeta = (typeof entries)[number];
+export type EntryMeta = (typeof ENTRIES)[number];
 
 const entriesBySlug = new Map<string, EntryMeta>(
-  entries.map((entry) => [entry.slug, entry]),
+  ENTRIES.map((entry) => [entry.slug, entry]),
 );
 
 export type Entry = EntryMeta & { content: string };
