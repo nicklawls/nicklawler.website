@@ -28,14 +28,13 @@ export default function FaqPage() {
         <div>
           <Q>Who is Nick Lawler?</Q>
           <A>
-            That would be me, a software engineer on the{" "}
+            That would be me, a software engineer on the UI Team at{" "}
             <a
               {...link}
               href="https://www.extrahop.com"
             >
               ExtraHop
-            </a>{"  "}
-            UI team.
+            </a>.
           </A>
         </div>
         <div>
@@ -43,8 +42,8 @@ export default function FaqPage() {
             What's the best way to get a hold of you with questions or feedback?
           </Q>
           <A>
-            Email <i>nick</i> "at" this site's domain, or comment on the
-            <br />
+            Email <i>nick</i> "at" <i>this site's host</i> "dot" {" "}
+            <i>this site's domain</i>, or comment on the {" "}
             <a
               {...link}
               href="https://github.com/nicklawls/nicklawler.website"
