@@ -25,7 +25,9 @@ export const ENTRIES = ([
 
 export type EntryMeta = (typeof ENTRIES)[number];
 
-const entriesBySlug = new Map<string, EntryMeta>(
+// Annotation purposfully widens `slug`'s type to `string, so that we can do
+// slug existence check and retrival with one `map.get()`
+const entriesBySlug: Map<string, EntryMeta> = new Map(
   ENTRIES.map((entry) => [entry.slug, entry]),
 );
 
