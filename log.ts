@@ -25,11 +25,12 @@ export const ENTRIES = ([
 
 export type EntryMeta = (typeof ENTRIES)[number];
 
-// Annotation purposfully widens `slug`'s type to `string, so that we can do
-// slug existence check and retrival with one `map.get()`
-const entriesBySlug: Map<string, EntryMeta> = new Map(
-  ENTRIES.map((entry) => [entry.slug, entry]),
-);
+const entriesBySlug = ENTRIES.reduce((acc, entry) => {
+  acc.set(entry.slug, entry);
+  return acc;
+  // Annotation purposfully widens `slug`'s type to `string, so that we can do
+  // slug existence check and retrival with one `map.get()`
+}, new Map<string, EntryMeta>());
 
 export type Entry = EntryMeta & { content: string };
 
