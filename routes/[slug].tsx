@@ -4,6 +4,8 @@ import { Entry, getEntry } from "../log.ts";
 import { CSS, render } from "$gfm";
 import { Head } from "$fresh/runtime.ts";
 import { Header, PAGES } from "../components/Header.tsx";
+import twindConfig from "../twind.config.ts";
+import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check";
 
 export const handler: Handlers<Entry> = {
   async GET(_req, ctx) {
@@ -23,6 +25,19 @@ const CUSTOM_CSS = `${CSS}
   .markdown-body {
     --color-canvas-default: auto;
     --color-fg-default: auto;
+    --color-accent-fg: ${twindConfig.theme.colors.bittersweet}
+  }
+
+  .markdown-body h2 {
+    border-bottom: none
+  }
+
+  [data-color-mode=auto][data-light-theme=light] {
+    --color-border-default: ${twindConfig.theme.colors.indigodye};
+  }
+
+  [data-color-mode=auto][data-dark-theme=dark] {
+    --color-border-default: ${twindConfig.theme.colors.peachyellow};
   }
 `;
 
