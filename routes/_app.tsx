@@ -11,6 +11,7 @@ const globalStyles = css({
         "dark:bg-indigodye",
         "text-indigodye",
         "dark:text-peachyellow",
+        "py-10",
       ],
     },
   },
@@ -26,12 +27,14 @@ export default function App({ Component }: AppProps) {
         >
         </link>
       </Head>
-      <div class={`${tw(globalStyles)} font-mono h-screen py-10`}>
-        <div class="px-5 w-200 
+      <div
+        class={`${tw(globalStyles)} 
+                  font-mono
+                  px-5 w-200 
                   md:mx-auto md:w-[600px] md:p-0
-                  flex flex-col space-y-10">
-          <Component />
-        </div>
+                  flex flex-col space-y-10`}
+      >
+        <Component />
       </div>
     </>
   );
