@@ -32,12 +32,20 @@ const CUSTOM_CSS = `${CSS}
     border-bottom: none
   }
 
-  [data-color-mode=auto][data-light-theme=light] {
-    --color-border-default: ${twindConfig.theme.colors.indigodye};
+  .markdown-body hr {
+    height: 1.5px
   }
 
-  [data-color-mode=auto][data-dark-theme=dark] {
-    --color-border-default: ${twindConfig.theme.colors.peachyellow};
+  @media(prefers-color-scheme: light) {
+    [data-color-mode=auto][data-light-theme=light] {
+       --color-border-default: ${twindConfig.theme.colors.indigodye};
+    }
+  }
+
+  @media(prefers-color-scheme: dark) {
+    [data-color-mode=auto][data-dark-theme=dark] {
+      --color-border-default: ${twindConfig.theme.colors.peachyellow};
+    }
   }
 `;
 
