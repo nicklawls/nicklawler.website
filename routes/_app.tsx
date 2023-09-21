@@ -19,6 +19,10 @@ const globalStyles = css({
       color: (ctx) => ctx.theme("colors.bittersweet"),
       textDecoration: "underline",
     },
+
+    ul: {
+      listStyle: 'inside'
+    }
   },
 });
 

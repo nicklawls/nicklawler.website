@@ -1,1 +1,1 @@
-export const SITE_TITLE = "Nick Lawler Dev Log" as const;
+export const SITE_TITLE = "Nick Lawler Web Site" as const;
