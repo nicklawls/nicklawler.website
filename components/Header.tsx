@@ -27,6 +27,8 @@ export const Header = (
     <div class="flex flex-row space-x-10 text-xl">
       {Object.values(PAGES).filter((p) => "show" in p && p.show).map((p) => (
         <a
+          // TODO: something to make it stand out from other links
+          // TODO: border and shadow around code blocks
           class={tw(
             "hover:underline",
             p.pathname === selectedPathname && "underline",

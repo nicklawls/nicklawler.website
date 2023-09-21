@@ -14,6 +14,11 @@ const globalStyles = css({
         "py-10",
       ],
     },
+
+    a: {
+      color: (ctx) => ctx.theme("colors.bittersweet"),
+      textDecoration: "underline",
+    },
   },
 });
 
@@ -28,11 +33,13 @@ export default function App({ Component }: AppProps) {
         </link>
       </Head>
       <div
-        class={`${tw(globalStyles)} 
-                  font-mono
-                  px-5 w-200 
-                  md:mx-auto md:w-[600px] md:p-0
-                  flex flex-col space-y-10`}
+        class={tw(
+          globalStyles,
+          "font-mono",
+          "px-5 w-200",
+          "md:mx-auto md:w-[600px] md:p-0",
+          "flex flex-col space-y-10",
+        )}
       >
         <Component />
       </div>

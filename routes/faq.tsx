@@ -11,7 +11,7 @@ const Q = ({ children }: { children: ComponentChildren }) => (
 
 const A = ({ children }: { children: ComponentChildren }) => <p>{children}</p>;
 
-const link = { class: "underline", target: "_blank" };
+const link = { target: "_blank" };
 
 export default function FaqPage() {
   return (
