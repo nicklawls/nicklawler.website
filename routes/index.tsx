@@ -43,7 +43,7 @@ export default function FaqPage() {
         </div>
         <div>
           <Q>
-            How do I get ahold of you?
+            How do I get a hold of you?
           </Q>
           <A>
             <ul>
