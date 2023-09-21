@@ -48,8 +48,7 @@ export default function FaqPage() {
           <A>
             <ul>
               <li>
-                Email <i>nick</i> "at" <i>this site's host</i> "dot"{"  "}
-                <i>this site's domain</i>
+                Email <i>nick</i> "at" <i>${'{'}window.location.hostname{'}'}</i>
               </li>
               <li>
                 Comment on a repo on{" "}
