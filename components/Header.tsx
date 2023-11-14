@@ -25,7 +25,7 @@ export const Header = (
 ) => (
   <div class="flex flex-col space-y-8">
     <h1 class="font-bold text-5xl">
-        {title}
-      </h1>
+      {title}
+    </h1>
   </div>
 );

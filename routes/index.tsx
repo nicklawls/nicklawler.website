@@ -62,7 +62,8 @@ export default function FaqPage() {
                 <a
                   {...link}
                   href={`mailto:${THE_STR}`}
-                  class="text-sm font-bold font-italic">
+                  class="text-sm font-bold font-italic"
+                >
                   {THE_STR}
                 </a>
               </li>
@@ -89,4 +90,4 @@ export default function FaqPage() {
   );
 }
 
-const THE_STR = '["nick", "@"].concat(`${window.location.hostname}`).join("")'
+const THE_STR = '["nick", "@"].concat(`${window.location.hostname}`).join("")';
