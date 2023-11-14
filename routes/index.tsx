@@ -23,7 +23,7 @@ export default function FaqPage() {
       <main class="space-y-10">
         <div class="space-y-1">
           <Q>What is this site?</Q>
-          <A>The online "business card" of Nick Lawler.</A>
+          <A>The online business card of Nick Lawler, by way of 00's era F.A.Q.</A>
         </div>
         <div class="space-y-1">
           <Q>Who is Nick Lawler?</Q>
