@@ -16,6 +16,7 @@ const globalStyles = css({
     },
 
     a: {
+      // "text-underline-offset": "4px",
       color: (ctx) => ctx.theme("colors.bittersweet"),
       textDecoration: "underline",
     },

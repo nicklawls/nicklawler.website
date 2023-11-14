@@ -5,7 +5,7 @@ import { SITE_TITLE } from "../title.ts";
 
 const Q = ({ children }: { children: ComponentChildren }) => (
   <i>
-    <strong>{children}</strong>
+    <strong class="text-lg">{children}</strong>
   </i>
 );
 
@@ -20,15 +20,15 @@ export default function FaqPage() {
         <title>{`${SITE_TITLE}`}</title>
       </Head>
       <Header selectedPathname={PAGES.faq.pathname} title={SITE_TITLE} />
-      <main class="space-y-12">
-        <div>
+      <main class="space-y-10">
+        <div class="space-y-1">
           <Q>What is this site?</Q>
           <A>The online "business card" of Nick Lawler.</A>
         </div>
-        <div>
+        <div class="space-y-1">
           <Q>Who is Nick Lawler?</Q>
           <A>
-            That would be me, a software engineer on the UI Team at{" "}
+            Me! A software engineer on the UI Team at{" "}
             <a
               {...link}
               href="https://www.extrahop.com"
@@ -37,18 +37,34 @@ export default function FaqPage() {
             </a>.
           </A>
         </div>
-        <div>
+        <div class="space-y-1">
           <Q>What do you work on?</Q>
-          <A>"the back end of the front end"</A>
+          <div class="space-y-4">
+            <A>
+              My team builds the marquee user experiences for ExtraHop's NDR
+              platform. I primarily work with React and TypeScript, with a focus
+              on getting data from the backend to the frontend in one piece.
+            </A>
+            <A>
+              In my spare time I like to tinker with programming language tech
+              and web tech, and think about how to smoosh the two together.
+            </A>
+          </div>
         </div>
-        <div>
+        <div class="space-y-1">
           <Q>
             How do I get a hold of you?
           </Q>
           <A>
             <ul>
               <li>
-                Email <i>nick</i> "at" <i>${'{'}window.location.hostname{'}'}</i>
+                Email{" "}
+                <a
+                  {...link}
+                  href={`mailto:${THE_STR}`}
+                  class="text-sm font-bold font-italic">
+                  {THE_STR}
+                </a>
               </li>
               <li>
                 Comment on a repo on{" "}
@@ -60,7 +76,10 @@ export default function FaqPage() {
                 </a>
               </li>
               <li>
-                Reach out on <a{...link} href="https://www.linkedin.com/in/youreyes">LinkedIn</a>
+                Reach out on{" "}
+                <a {...link} href="https://www.linkedin.com/in/youreyes">
+                  LinkedIn
+                </a>
               </li>
             </ul>
           </A>
@@ -69,3 +88,5 @@ export default function FaqPage() {
     </>
   );
 }
+
+const THE_STR = '["nick", "@"].concat(`${window.location.hostname}`).join("")'
