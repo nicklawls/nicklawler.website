@@ -1,7 +1,7 @@
-import { readableStreamToBlob, serve, type ServeOptions } from "bun";
+import { serve, type ServeOptions } from "bun";
 import type { ReactNode } from "react";
 
-import { renderToReadableStream } from "react-dom/server";
+import { renderToStaticMarkup } from "react-dom/server";
 
 const Q = ({ children }: { children: ReactNode }) => (
   <i>
@@ -112,17 +112,14 @@ const options: ServeOptions = {
   port: 3000,
   development: true,
   static: {
-    "/": new Response(
-      await readableStreamToBlob(await renderToReadableStream(<FaqPage />)),
-      { headers: { "Content-Type": "text/html" } },
-    ),
+    "/": new Response(renderToStaticMarkup(<FaqPage />), {
+      headers: { "Content-Type": "text/html" },
+    }),
   },
   fetch: async (request, _server) => {
     return new Response(
-      await readableStreamToBlob(
-        await renderToReadableStream(
-          <p>404 not found: {new URL(request.url).pathname}</p>,
-        ),
+      renderToStaticMarkup(
+        <p>404 not found: {new URL(request.url).pathname}</p>,
       ),
       { headers: { "Content-Type": "text/html" } },
     );
