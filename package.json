@@ -2,6 +2,10 @@
   "name": "nicklawler.website",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "run": "bun run index.tsx",
+    "watch": "bun run --hot index.tsx"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

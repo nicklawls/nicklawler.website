@@ -114,6 +114,7 @@ const options: ServeOptions = {
   static: {
     "/": new Response(
       await readableStreamToBlob(await renderToReadableStream(<FaqPage />)),
+      { headers: { "Content-Type": "text/html" } },
     ),
   },
   fetch: async (request, _server) => {
