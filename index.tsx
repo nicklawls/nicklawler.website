@@ -1,6 +1,5 @@
-import { serve, type ServeOptions } from "bun";
-import type { ReactNode } from "react";
-
+import { serve } from "bun";
+import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const Q = ({ children }: { children: ReactNode }) => (
@@ -13,7 +12,7 @@ const A = ({ children }: { children: ReactNode }) => <p>{children}</p>;
 
 const link = { target: "_blank" };
 
-const SITE_TITLE = "Nick Lawler Web Site" as const;
+const SITE_TITLE = "Nick Lawler Website" as const;
 
 const THE_STR = '["nick", "@"].concat(`${window.location.hostname}`).join("")';
 
@@ -34,7 +33,7 @@ const PAGES = {
   },
 } as const;
 
-const Header = ({ title }: { selectedPathname?: string; title: string }) => (
+const Header = ({ title }: { title: string }) => (
   <div className="flex flex-col space-y-8">
     <h1 className="font-bold text-5xl">{title}</h1>
   </div>
@@ -43,10 +42,7 @@ const Header = ({ title }: { selectedPathname?: string; title: string }) => (
 function FaqPage() {
   return (
     <>
-      {/* <Head>
-        <title>{`${SITE_TITLE}`}</title>
-      </Head> */}
-      <Header selectedPathname={PAGES.faq.pathname} title={SITE_TITLE} />
+      <Header title={SITE_TITLE} />
       <main className="space-y-10">
         <div className="space-y-1">
           <Q>What is this site?</Q>
@@ -108,22 +104,64 @@ function FaqPage() {
   );
 }
 
-const options: ServeOptions = {
+/** Has to be a string that react renders into, to control the <head> and <title> */
+function appTemplate(body: string): string {
+  return `<!DOCTYPE html>
+     <html lang="en">
+      <head>
+        <title>${SITE_TITLE}</title>
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
+        />
+        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+        <style type="text/tailwindcss">
+          @theme {
+           --color-peachyellow: #EFD28D;
+           --color-indigodye: #004777;
+           --color-bittersweet: #FF5A5F
+          }
+
+          a {
+            color: var(--color-bittersweet);
+            text-decoration: underline;
+          }
+
+          ul {
+            list-style: inside;
+          }
+
+          :global {
+            font-family: Veranda, Georgia, sans;
+          }
+        </style>
+      </head>
+      <body class="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
+        <div
+          class="font-mono px-5 w-200 md:mx-auto md:w-[600px] md:p-0 flex flex-col space-y-10"
+        >
+          ${body}
+        </div>
+      </body>
+    </html>`;
+}
+
+serve({
   port: 3000,
   development: true,
   static: {
-    "/": new Response(renderToStaticMarkup(<FaqPage />), {
+    "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
     }),
   },
   fetch: async (request, _server) => {
     return new Response(
-      renderToStaticMarkup(
-        <p>404 not found: {new URL(request.url).pathname}</p>,
+      appTemplate(
+        renderToStaticMarkup(
+          <p>404 not found: {new URL(request.url).pathname}</p>,
+        ),
       ),
       { headers: { "Content-Type": "text/html" } },
     );
   },
-};
-
-serve(options);
+});
