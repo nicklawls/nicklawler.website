@@ -1,4 +1,4 @@
-import { serve } from "bun";
+import { $, file, serve } from "bun";
 import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -104,6 +104,8 @@ function FaqPage() {
   );
 }
 
+const PATH_CSS_OUT = "/index.out.css" as const;
+
 /** Has to be a string that react renders into, to control the <head> and <title> */
 function appTemplate(body: string): string {
   return `<!DOCTYPE html>
@@ -114,27 +116,7 @@ function appTemplate(body: string): string {
           rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
         />
-        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-        <style type="text/tailwindcss">
-          @theme {
-           --color-peachyellow: #EFD28D;
-           --color-indigodye: #004777;
-           --color-bittersweet: #FF5A5F
-          }
-
-          a {
-            color: var(--color-bittersweet);
-            text-decoration: underline;
-          }
-
-          ul {
-            list-style: inside;
-          }
-
-          :global {
-            font-family: Veranda, Georgia, sans;
-          }
-        </style>
+        <link href="${PATH_CSS_OUT}" rel="stylesheet" />
       </head>
       <body class="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
         <div
@@ -146,6 +128,11 @@ function appTemplate(body: string): string {
     </html>`;
 }
 
+// TODO: this is such a hack
+// Interem between here and plugin would be to compile css with 
+// tailwind programatically and include it in the app template.
+await $`bunx tailwindcss -i ./index.css -o ./${PATH_CSS_OUT} `;
+
 serve({
   port: 3000,
   development: true,
@@ -153,6 +140,7 @@ serve({
     "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
     }),
+    [PATH_CSS_OUT]: new Response(await file(`.${PATH_CSS_OUT}`).bytes()),
   },
   fetch: async (request, _server) => {
     return new Response(
