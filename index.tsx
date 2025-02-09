@@ -129,18 +129,20 @@ function appTemplate(body: string): string {
 }
 
 // TODO: this is such a hack
-// Interem between here and plugin would be to compile css with 
+// Interem between here and plugin would be to compile css with
 // tailwind programatically and include it in the app template.
-await $`bunx tailwindcss -i ./index.css -o ./${PATH_CSS_OUT} `;
+await $`bunx tailwindcss -i ./index.css -o ./${PATH_CSS_OUT} `.quiet();
 
 serve({
-  port: 3000,
+  port: process.env["PORT"] ?? 3000,
   development: true,
   static: {
     "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
     }),
-    [PATH_CSS_OUT]: new Response(await file(`.${PATH_CSS_OUT}`).bytes()),
+    [PATH_CSS_OUT]: new Response(await file(`.${PATH_CSS_OUT}`).bytes(), {
+      headers: { "Content-Type": "text/css" },
+    }),
   },
   fetch: async (request, _server) => {
     return new Response(
