@@ -136,7 +136,7 @@ await $`bunx tailwindcss -i ./index.css -o ./${PATH_CSS_OUT} `.quiet();
 serve({
   hostname: "0.0.0.0",
   port: process.env["PORT"] ?? 3000,
-  development: true,
+  development: process.env.NODE_ENV !== 'production',
   static: {
     "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
