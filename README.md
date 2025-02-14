@@ -9,7 +9,25 @@ bun install
 To run:
 
 ```bash
-bun run index.ts
+bun run run
 ```
 
-This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+To develop:
+
+```bash
+bun run watch
+```
+
+
+### TODO
+
+* point DNS at render
+* delete DNS for deno deploy
+* shut down deno deploy
+* merge to trunk branch
+* point render deploys at trunk branch
+* Nick Lawler Dot Website
+* add http cache headers
+* solve in-band bun versioning (for dev and render)
+* "ci"
+* better CSS strategy
