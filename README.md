@@ -21,8 +21,6 @@ bun run watch
 
 ### TODO
 
-* point DNS at render
-* delete DNS for deno deploy
 * shut down deno deploy
 * merge to trunk branch
 * point render deploys at trunk branch
