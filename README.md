@@ -21,7 +21,6 @@ bun run watch
 
 ### TODO
 
-* shut down deno deploy
 * merge to trunk branch
 * point render deploys at trunk branch
 * Nick Lawler Dot Website
