@@ -21,9 +21,6 @@ bun run watch
 
 ### TODO
 
-* merge to trunk branch
-* point render deploys at trunk branch
-* Nick Lawler Dot Website
 * add http cache headers
 * solve in-band bun versioning (for dev and render)
 * "ci"
