@@ -21,7 +21,6 @@ bun run watch
 
 ### TODO
 
-* add http cache headers
 * solve in-band bun versioning (for dev and render)
 * "ci"
 * better CSS strategy
