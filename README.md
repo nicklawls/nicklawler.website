@@ -17,10 +17,3 @@ To develop:
 ```bash
 bun run watch
 ```
-
-
-### TODO
-
-* solve in-band bun versioning (for dev and render)
-* "ci"
-* better CSS strategy

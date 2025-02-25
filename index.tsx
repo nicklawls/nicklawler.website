@@ -143,7 +143,7 @@ serve({
   hostname: "0.0.0.0",
   port: process.env["PORT"] ?? 3000,
   development: process.env.NODE_ENV !== "production",
-  static: {
+  routes: {
     "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
     }),
@@ -158,7 +158,7 @@ serve({
           <p>404 not found: {new URL(request.url).pathname}</p>,
         ),
       ),
-      { headers: { "Content-Type": "text/html" } },
+      { headers: { "Content-Type": "text/html" }, status: 404 },
     );
   },
 });
