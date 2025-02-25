@@ -8,6 +8,12 @@ const Q = ({ children }: { children: ReactNode }) => (
   </i>
 );
 
+if (Bun.version !== process.env["BUN_VERSION"]) {
+  throw new Error("Version mismatch", {
+    cause: [Bun.version, process.env["BUN_VERSION"]],
+  });
+}
+
 const A = ({ children }: { children: ReactNode }) => <p>{children}</p>;
 
 const link = { target: "_blank" };
@@ -136,7 +142,7 @@ await $`bunx tailwindcss -i ./index.css -o ./${PATH_CSS_OUT} `.quiet();
 serve({
   hostname: "0.0.0.0",
   port: process.env["PORT"] ?? 3000,
-  development: process.env.NODE_ENV !== 'production',
+  development: process.env.NODE_ENV !== "production",
   static: {
     "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
