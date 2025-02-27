@@ -1,4 +1,4 @@
-import { $, file, serve } from "bun";
+import { $, serve } from "bun";
 import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -110,7 +110,7 @@ function FaqPage() {
   );
 }
 
-const PATH_CSS_OUT = "/index.out.css" as const;
+const PATH_CSS_OUT = "/index.css" as const;
 
 /** Has to be a string that react renders into, to control the <head> and <title> */
 function appTemplate(body: string): string {
@@ -134,11 +134,6 @@ function appTemplate(body: string): string {
     </html>`;
 }
 
-// TODO: this is such a hack
-// Interem between here and plugin would be to compile css with
-// tailwind programatically and include it in the app template.
-await $`bunx tailwindcss -i ./index.css -o ./${PATH_CSS_OUT} `.quiet();
-
 serve({
   hostname: "0.0.0.0",
   port: process.env["PORT"] ?? 3000,
@@ -147,9 +142,15 @@ serve({
     "/": new Response(appTemplate(renderToStaticMarkup(<FaqPage />)), {
       headers: { "Content-Type": "text/html" },
     }),
-    [PATH_CSS_OUT]: new Response(await file(`.${PATH_CSS_OUT}`).bytes(), {
-      headers: { "Content-Type": "text/css" },
-    }),
+    [PATH_CSS_OUT]: new Response(
+      // TODO: this is such a hack
+      // Interem between here and plugin would be to compile css with
+      // tailwind programatically and not shell out.
+      await $`bunx tailwindcss -i ./index.css`.blob(),
+      {
+        headers: { "Content-Type": "text/css" },
+      },
+    ),
   },
   fetch: async (request, _server) => {
     return new Response(
