@@ -1,7 +1,7 @@
 import { $, serve } from "bun";
-import { Fragment, type ReactNode } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import * as marked from "marked";
+import { type ReactNode } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 
 const Q = ({ children }: { children: ReactNode }) => (
   <i>
@@ -107,39 +107,36 @@ function FaqPage() {
 
 const PATH_CSS_OUT = "/index.css" as const;
 
-/** Has to be a string that react renders into, to control the <head> and <title> */
-function appTemplate({
+/** Render {@link title} and {@link body} into the right spots in the document */
+function app_shell({
+  /** `<title/>` element, defaults to the site title */
   title,
+  /** Element that will be a descendant of the body. Its ancestors provide most of the page-level styling */
   body,
 }: {
   title?: ReactNode;
   body: ReactNode;
 }): string {
-  const head_content = (
-    <Fragment>
-      <meta charSet="utf-8" />
-      {title ?? <title>{SITE_TITLE}</title>}
-      <link
-        rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
-      />
-      <link href={PATH_CSS_OUT} rel="stylesheet" />
-    </Fragment>
-  );
-  const body_content = (
-    <body className="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
-      <div className="font-mono px-5 w-200 md:mx-auto md:w-[650px] md:p-0 flex flex-col space-y-10">
-        {body}
-      </div>
-    </body>
-  );
-  return `<!DOCTYPE html>
-     <html lang="en">
+  const html = (
+    <html lang="en">
       <head>
-        ${renderToStaticMarkup(head_content)}
+        <meta charSet="utf-8" />
+        {title ?? <title>{SITE_TITLE}</title>}
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
+        />
+        <link href={PATH_CSS_OUT} rel="stylesheet" />
       </head>
-      ${renderToStaticMarkup(body_content)}
-    </html>`;
+      <body className="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
+        <div className="font-mono px-5 w-200 md:mx-auto md:w-[650px] md:p-0 flex flex-col space-y-10">
+          {body}
+        </div>
+      </body>
+    </html>
+  );
+
+  return `<!DOCTYPE html>\n` + renderToStaticMarkup(html);
 }
 
 interface Entry {
@@ -191,7 +188,7 @@ const server = serve({
   port: process.env["PORT"] ?? 3000,
   development: process.env.NODE_ENV !== "production",
   routes: {
-    "/": new Response(appTemplate({ body: <FaqPage /> }), {
+    "/": new Response(app_shell({ body: <FaqPage /> }), {
       headers: { "Content-Type": "text/html" },
     }),
     [PATH_CSS_OUT]: new Response(
@@ -211,7 +208,7 @@ const server = serve({
         .map(([slug, entry]) => [
           slug,
           new Response(
-            appTemplate({
+            app_shell({
               title: <title>{entry.title}</title>,
               body: (
                 <div className="flex flex-col space-y-3">
@@ -244,7 +241,7 @@ const server = serve({
           ),
         ]),
     ),
-    "/*": new Response(appTemplate({ body: <p>404 not found</p> }), {
+    "/*": new Response(app_shell({ body: <p>404 not found</p> }), {
       headers: { "Content-Type": "text/html" },
       status: 404,
     }),
