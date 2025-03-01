@@ -2,17 +2,13 @@ import { $, file, serve } from "bun";
 import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
+import * as marked from "marked";
+
 const Q = ({ children }: { children: ReactNode }) => (
   <i>
     <strong className="text-lg">{children}</strong>
   </i>
 );
-
-if (Bun.version !== process.env["BUN_VERSION"]) {
-  throw new Error("Version mismatch", {
-    cause: [Bun.version, process.env["BUN_VERSION"]],
-  });
-}
 
 const A = ({ children }: { children: ReactNode }) => <p>{children}</p>;
 
@@ -113,10 +109,7 @@ function FaqPage() {
 const PATH_CSS_OUT = "/index.css" as const;
 
 /** Has to be a string that react renders into, to control the <head> and <title> */
-function appTemplate(
-  body: ReactNode,
-  head?: ReactNode,
-): string {
+function appTemplate(body: ReactNode, head?: ReactNode): string {
   return `<!DOCTYPE html>
      <html lang="en">
       <head>
@@ -189,14 +182,17 @@ function EntryPage({
           data-light-theme="light"
           data-dark-theme="dark"
         >
-          <div className="mt-8 markdown-body">{content}</div>
+          <div
+            className="mt-8 markdown-body"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-serve({
+const server = serve({
   hostname: "0.0.0.0",
   port: process.env["PORT"] ?? 3000,
   development: process.env.NODE_ENV !== "production",
@@ -221,17 +217,20 @@ serve({
     const entry = ENTRIES.find((e) => e.slug === slug);
     if (entry) {
       try {
-        const content = await file(`./entries/${entry.file}`).text();
+        const markdown = await file(`./entries/${entry.file}`).text();
+        const html = await marked.parse(markdown);
         return new Response(
           appTemplate(
-            <EntryPage entry={entry} content={content} />,
+            <EntryPage entry={entry} content={html} />,
             <title>{entry.title}</title>,
           ),
           {
             headers: { "Content-Type": "text/html" },
           },
         );
-      } catch (_) {}
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     return new Response(appTemplate(<p>404 not found: {pathname}</p>), {
@@ -240,3 +239,5 @@ serve({
     });
   },
 });
+
+console.log(server.url.href);
