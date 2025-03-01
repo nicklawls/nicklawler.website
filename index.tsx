@@ -3,9 +3,6 @@ import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import * as marked from "marked";
 
-import metapost from "./entries/metapost.md" with { type: "text" };
-import hello_world from "./entries/hello-world.md" with { type: "text" };
-
 const Q = ({ children }: { children: ReactNode }) => (
   <i>
     <strong className="text-lg">{children}</strong>
@@ -132,66 +129,44 @@ function appTemplate(body: ReactNode, head?: ReactNode): string {
     </html>`;
 }
 
+interface Entry {
+  title: string;
+  date: Date;
+  show: boolean;
+  content: string;
+}
+
+import metapost from "./entries/metapost.md" with { type: "text" };
 const promise_hello_world = marked.parse(hello_world);
+
+import hello_world from "./entries/hello-world.md" with { type: "text" };
 const promise_metapost = marked.parse(metapost);
 
+const ENTRIES_BY_SLUG = {
+  "/hello-world": {
+    title: "Hello World",
+    date: new Date("7-4-2023"),
+    show: false,
+    content: await promise_hello_world,
+  },
+  "/hello-world-2": {
+    title: "Hello World 2",
+    date: new Date("7-6-2023"),
+    show: true,
+    content: await promise_hello_world,
+  },
+  "/metapost": {
+    title: "How to Build This Website",
+    date: new Date("7-21-2024"),
+    show: true,
+    content: await promise_metapost,
+  },
+} as const satisfies { [slug: `/${string}`]: Entry };
+
 /** Type predicate infrence means that only the ones with show: true make it! */
-export const ENTRIES = (
-  [
-    {
-      slug: "hello-world",
-      title: "Hello World",
-      date: new Date("7-4-2023"),
-      file: "hello-world.md",
-      show: false,
-    },
-    {
-      slug: "hello-world-2",
-      title: "Hello World 2",
-      date: new Date("7-6-2023"),
-      file: "hello-world-2.md",
-      show: true,
-      content: await promise_hello_world,
-    },
-    {
-      slug: "metapost",
-      title: "How to Build This Website",
-      date: new Date("7-21-2024"),
-      file: "metapost.md",
-      show: true,
-      content: await promise_metapost,
-    },
-  ] as const
-)
+const ENTRIES_BY_DATE = Object.values(ENTRIES_BY_SLUG)
   .filter((entry) => entry.show)
   .sort((a, b) => a.date.getTime() - b.date.getTime());
-
-function EntryPage({ entry }: { entry: (typeof ENTRIES)[number] }) {
-  return (
-    <div className="flex flex-col space-y-3">
-      <Header title={entry.title} />
-      <div>
-        <time className="text-gray-500">
-          {entry.date.toLocaleDateString("en-us", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </time>
-        <div
-          data-color-mode="auto"
-          data-light-theme="light"
-          data-dark-theme="dark"
-        >
-          <div
-            className="mt-8 markdown-body"
-            dangerouslySetInnerHTML={{ __html: entry.content }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 const server = serve({
   hostname: "0.0.0.0",
@@ -210,32 +185,48 @@ const server = serve({
         headers: { "Content-Type": "text/css" },
       },
     ),
-  },
-  fetch: async (request, _server) => {
-    const pathname = new URL(request.url).pathname;
-    const slug = pathname.replace("/", "");
-    // TODO: pre-bake ENTRIES into an object for `routes`
-    const entry = ENTRIES.find((e) => e.slug === slug);
-    if (entry) {
-      try {
-        return new Response(
-          appTemplate(
-            <EntryPage entry={entry} />,
-            <title>{entry.title}</title>,
+    ...Object.fromEntries(
+      Object.entries(ENTRIES_BY_SLUG)
+        // Not smart enough to infer a type predicate with nesting though
+        .filter(([, entry]) => entry.show)
+        .map(([slug, entry]) => [
+          slug,
+          new Response(
+            appTemplate(
+              <div className="flex flex-col space-y-3">
+                <Header title={entry.title} />
+                <div>
+                  <time className="text-gray-500">
+                    {entry.date.toLocaleDateString("en-us", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                  <div
+                    data-color-mode="auto"
+                    data-light-theme="light"
+                    data-dark-theme="dark"
+                  >
+                    <div
+                      className="mt-8 markdown-body"
+                      dangerouslySetInnerHTML={{ __html: entry.content }}
+                    />
+                  </div>
+                </div>
+              </div>,
+              <title>{entry.title}</title>,
+            ),
+            {
+              headers: { "Content-Type": "text/html" },
+            },
           ),
-          {
-            headers: { "Content-Type": "text/html" },
-          },
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    return new Response(appTemplate(<p>404 not found: {pathname}</p>), {
+        ]),
+    ),
+    "/*": new Response(appTemplate(<p>404 not found</p>), {
       headers: { "Content-Type": "text/html" },
       status: 404,
-    });
+    }),
   },
 });
 
