@@ -1,8 +1,10 @@
-import { $, file, serve } from "bun";
+import { $, serve } from "bun";
 import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-
 import * as marked from "marked";
+
+import metapost from "./entries/metapost.md" with { type: "text" };
+import hello_world from "./entries/hello-world.md" with { type: "text" };
 
 const Q = ({ children }: { children: ReactNode }) => (
   <i>
@@ -130,6 +132,9 @@ function appTemplate(body: ReactNode, head?: ReactNode): string {
     </html>`;
 }
 
+const promise_hello_world = marked.parse(hello_world);
+const promise_metapost = marked.parse(metapost);
+
 /** Type predicate infrence means that only the ones with show: true make it! */
 export const ENTRIES = (
   [
@@ -146,6 +151,7 @@ export const ENTRIES = (
       date: new Date("7-6-2023"),
       file: "hello-world-2.md",
       show: true,
+      content: await promise_hello_world,
     },
     {
       slug: "metapost",
@@ -153,19 +159,14 @@ export const ENTRIES = (
       date: new Date("7-21-2024"),
       file: "metapost.md",
       show: true,
+      content: await promise_metapost,
     },
   ] as const
 )
   .filter((entry) => entry.show)
   .sort((a, b) => a.date.getTime() - b.date.getTime());
 
-function EntryPage({
-  entry,
-  content,
-}: {
-  entry: (typeof ENTRIES)[number];
-  content: string;
-}) {
+function EntryPage({ entry }: { entry: (typeof ENTRIES)[number] }) {
   return (
     <div className="flex flex-col space-y-3">
       <Header title={entry.title} />
@@ -184,7 +185,7 @@ function EntryPage({
         >
           <div
             className="mt-8 markdown-body"
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{ __html: entry.content }}
           />
         </div>
       </div>
@@ -217,11 +218,9 @@ const server = serve({
     const entry = ENTRIES.find((e) => e.slug === slug);
     if (entry) {
       try {
-        const markdown = await file(`./entries/${entry.file}`).text();
-        const html = await marked.parse(markdown);
         return new Response(
           appTemplate(
-            <EntryPage entry={entry} content={html} />,
+            <EntryPage entry={entry} />,
             <title>{entry.title}</title>,
           ),
           {
