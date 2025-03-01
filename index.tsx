@@ -193,6 +193,7 @@ const server = serve({
     ),
     ...Object.fromEntries(
       Object.entries(ENTRIES_BY_SLUG)
+        .values()
         // Not smart enough to infer a type predicate with nesting though
         .filter(([, entry]) => entry.show)
         .map(([slug, entry]) => [
