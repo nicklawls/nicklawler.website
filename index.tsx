@@ -143,6 +143,9 @@ const promise_hello_world = marked.parse(hello_world);
 import hello_world from "./entries/hello-world.md" with { type: "text" };
 const promise_metapost = marked.parse(metapost);
 
+import backwards from "./entries/backwards.md" with { type: "text" };
+const promise_backwards = marked.parse(backwards);
+
 const ENTRIES_BY_SLUG = {
   "/hello-world": {
     title: "Hello World",
@@ -150,11 +153,11 @@ const ENTRIES_BY_SLUG = {
     show: false,
     markdown: await promise_hello_world,
   },
-  "/hello-world-2": {
-    title: "Hello World 2",
-    date: new Date("7-6-2023"),
+  "/backwards": {
+    title: "Reflecting the Serenity Prayer",
+    date: new Date("2-28-2025"),
     show: true,
-    markdown: await promise_hello_world,
+    markdown: await promise_backwards,
   },
   "/metapost": {
     title: "How to Build This Website",
