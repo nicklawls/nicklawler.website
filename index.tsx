@@ -1,5 +1,5 @@
 import { $, serve } from "bun";
-import { type ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import * as marked from "marked";
 
@@ -108,25 +108,37 @@ function FaqPage() {
 const PATH_CSS_OUT = "/index.css" as const;
 
 /** Has to be a string that react renders into, to control the <head> and <title> */
-function appTemplate(body: ReactNode, head?: ReactNode): string {
+function appTemplate({
+  title,
+  body,
+}: {
+  title?: ReactNode;
+  body: ReactNode;
+}): string {
+  const head_content = (
+    <Fragment>
+      <meta charSet="utf-8" />
+      {title ?? <title>{SITE_TITLE}</title>}
+      <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
+      />
+      <link href={PATH_CSS_OUT} rel="stylesheet" />
+    </Fragment>
+  );
+  const body_content = (
+    <body className="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
+      <div className="font-mono px-5 w-200 md:mx-auto md:w-[650px] md:p-0 flex flex-col space-y-10">
+        {body}
+      </div>
+    </body>
+  );
   return `<!DOCTYPE html>
      <html lang="en">
       <head>
-        <meta charset="utf-8">
-        ${renderToStaticMarkup(head ?? <title>{SITE_TITLE}</title>)}
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
-        />
-        <link href="${PATH_CSS_OUT}" rel="stylesheet" />
+        ${renderToStaticMarkup(head_content)}
       </head>
-      <body class="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
-        <div
-          class="font-mono px-5 w-200 md:mx-auto md:w-[600px] md:p-0 flex flex-col space-y-10"
-        >
-          ${renderToStaticMarkup(body)}
-        </div>
-      </body>
+      ${renderToStaticMarkup(body_content)}
     </html>`;
 }
 
@@ -179,7 +191,7 @@ const server = serve({
   port: process.env["PORT"] ?? 3000,
   development: process.env.NODE_ENV !== "production",
   routes: {
-    "/": new Response(appTemplate(<FaqPage />), {
+    "/": new Response(appTemplate({ body: <FaqPage /> }), {
       headers: { "Content-Type": "text/html" },
     }),
     [PATH_CSS_OUT]: new Response(
@@ -199,38 +211,40 @@ const server = serve({
         .map(([slug, entry]) => [
           slug,
           new Response(
-            appTemplate(
-              <div className="flex flex-col space-y-3">
-                <Header title={entry.title} />
-                <div>
-                  <time className="text-gray-500">
-                    {entry.date.toLocaleDateString("en-us", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <div
-                    data-color-mode="auto"
-                    data-light-theme="light"
-                    data-dark-theme="dark"
-                  >
+            appTemplate({
+              title: <title>{entry.title}</title>,
+              body: (
+                <div className="flex flex-col space-y-3">
+                  <Header title={entry.title} />
+                  <div>
+                    <time className="text-gray-500">
+                      {entry.date.toLocaleDateString("en-us", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </time>
                     <div
-                      className="mt-8 space-y-6"
-                      dangerouslySetInnerHTML={{ __html: entry.markdown }}
-                    />
+                      data-color-mode="auto"
+                      data-light-theme="light"
+                      data-dark-theme="dark"
+                    >
+                      <div
+                        className="mt-8 space-y-6"
+                        dangerouslySetInnerHTML={{ __html: entry.markdown }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>,
-              <title>{entry.title}</title>,
-            ),
+              ),
+            }),
             {
               headers: { "Content-Type": "text/html" },
             },
           ),
         ]),
     ),
-    "/*": new Response(appTemplate(<p>404 not found</p>), {
+    "/*": new Response(appTemplate({ body: <p>404 not found</p> }), {
       headers: { "Content-Type": "text/html" },
       status: 404,
     }),
