@@ -1,9 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
-  --color-peachyellow: #EFD28D;
-  --color-indigodye: #004777;
-  --color-bittersweet: #FF5A5F
+    --color-peachyellow: #efd28d;
+    --color-indigodye: #004777;
+    --color-bittersweet: #ff5a5f;
 }
 
 a {
@@ -13,6 +13,28 @@ a {
 
 ul {
     list-style: inside;
+    padding-left: 16px;
+}
+
+h2 {
+    font-size: x-large;
+}
+
+pre,
+code {
+    background-color: gray;
+    color: black;
+}
+
+pre {
+    border-radius: 4px;
+    padding: 4px;
+    overflow-x: scroll;
+}
+
+code {
+    padding: 0px 2px;
+    border-radius: 2px;
 }
 
 :global {

@@ -22,33 +22,19 @@ getting back to it this year I'm pretty happy how things turned out.
 
 A `tree` in the project directory yields the following.
 
-```text
-|> tree
+```bash
+|> eza --tree --ignore-glob=node_modules
 .
-├── README.md
-├── components
-│   └── Header.tsx
-├── deno.json
-├── deno.lock
-├── dev.ts
+├── assets.d.ts
+├── bun.lock
 ├── entries
-│   ├── hello-world.md
-│   └── metapost.md  // you are here
-├── fresh.gen.ts
-├── import_map.json
-├── log.ts
-├── main.ts
-├── routes
-│   ├── [slug].tsx
-│   ├── _404.tsx
-│   ├── _app.tsx
-│   ├── faq.tsx
-│   └── index.tsx
-├── static
-├── title.ts
-└── twind.config.ts
-
-5 directories, 19 files
+│  ├── hello-world.md
+│  └── metapost.md
+├── index.css
+├── index.tsx
+├── package.json
+├── README.md
+└── tsconfig.json
 ```
 
 This is a fairly normal fresh 1.1 setup. I've tried upgrading to 1.2 but

@@ -112,6 +112,7 @@ function appTemplate(body: ReactNode, head?: ReactNode): string {
   return `<!DOCTYPE html>
      <html lang="en">
       <head>
+        <meta charset="utf-8">
         ${renderToStaticMarkup(head ?? <title>{SITE_TITLE}</title>)}
         <link
           rel="icon"
@@ -133,7 +134,7 @@ interface Entry {
   title: string;
   date: Date;
   show: boolean;
-  content: string;
+  markdown: string;
 }
 
 import metapost from "./entries/metapost.md" with { type: "text" };
@@ -147,19 +148,19 @@ const ENTRIES_BY_SLUG = {
     title: "Hello World",
     date: new Date("7-4-2023"),
     show: false,
-    content: await promise_hello_world,
+    markdown: await promise_hello_world,
   },
   "/hello-world-2": {
     title: "Hello World 2",
     date: new Date("7-6-2023"),
     show: true,
-    content: await promise_hello_world,
+    markdown: await promise_hello_world,
   },
   "/metapost": {
     title: "How to Build This Website",
     date: new Date("7-21-2024"),
     show: true,
-    content: await promise_metapost,
+    markdown: await promise_metapost,
   },
 } as const satisfies { [slug: `/${string}`]: Entry };
 
@@ -167,6 +168,8 @@ const ENTRIES_BY_SLUG = {
 const ENTRIES_BY_DATE = Object.values(ENTRIES_BY_SLUG)
   .filter((entry) => entry.show)
   .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+import css from "./index.css" with { type: "text" };
 
 const server = serve({
   hostname: "0.0.0.0",
@@ -180,7 +183,7 @@ const server = serve({
       // TODO: this is such a hack
       // Interem between here and plugin would be to compile css with
       // tailwind programatically and not shell out.
-      await $`bunx tailwindcss -i ./index.css`.blob(),
+      await $`echo ${css} | bunx tailwindcss -i -`.blob(),
       {
         headers: { "Content-Type": "text/css" },
       },
@@ -209,8 +212,8 @@ const server = serve({
                     data-dark-theme="dark"
                   >
                     <div
-                      className="mt-8 markdown-body"
-                      dangerouslySetInnerHTML={{ __html: entry.content }}
+                      className="mt-8 space-y-6"
+                      dangerouslySetInnerHTML={{ __html: entry.markdown }}
                     />
                   </div>
                 </div>
