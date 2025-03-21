@@ -109,19 +109,19 @@ const PATH_CSS_OUT = "/index.css" as const;
 
 /** Render {@link title} and {@link body} into the right spots in the document */
 function app_shell({
-  /** `<title/>` element, defaults to the site title */
   title,
-  /** Element that will be a descendant of the body. Its ancestors provide most of the page-level styling */
   body,
 }: {
-  title?: ReactNode;
+  /** `<title/>` element child text, defaults to the site title */
+  title?: string;
+  /** Element that will be a descendant of the body. Its ancestors provide most of the page-level styling */
   body: ReactNode;
 }): string {
   const html = (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        {title ?? <title>{SITE_TITLE}</title>}
+        {<title>{title ?? SITE_TITLE}</title>}
         <link
           rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥁</text></svg>"
@@ -209,7 +209,7 @@ const server = serve({
           slug,
           new Response(
             app_shell({
-              title: <title>{entry.title}</title>,
+              title: entry.title,
               body: (
                 <div className="flex flex-col space-y-3">
                   <Header title={entry.title} />
