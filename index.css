@@ -21,12 +21,12 @@ h2 {
 }
 
 pre,
-code {
+code, blockquote {
     background-color: gray;
     color: black;
 }
 
-pre {
+pre, blockquote {
     border-radius: 4px;
     padding: 4px;
     overflow-x: scroll;

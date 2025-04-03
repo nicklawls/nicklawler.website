@@ -1,11 +1,17 @@
-The serentiy prayer is written exactly backwards.
+I, like many I suspect, grew up with a copy of this bad boy hung on my wall.
 
-> God grant me the serentity to accept the things I cannot change, the courage to change the things I can, and the wisdom to know the difference. 
+> God grant me the serentity to accept the things I cannot change, 
+  the courage to change the things I can, 
+  and the wisdom to know the difference. 
 
-Maybe I'm being an a prude, and messing up the poetic structure here. But my main failure mode in applying the prayer is to over-focus on the Big Abstract Concepts. What is true _serenity_. What is the real essence of _courage_?
+My main failure mode in applying the prayer is to over-focus on the Big Abstract
+Qualities. What is true _serenity_??? What is the real essence of _courage_??? 
+If I had those, then maybe I could accept the things I cannot change and change the things I can!
 
-But that is all antithetical to the point, which is to take ownership of the actual things you have ownership over in your life. At best serenity, courage, and wisdom are suggested means to those ends.
+The structure prayer certainly seems to suggest this flow of causality. I request Abstract Quality, it is 
+granted, then I Do the Thing.
 
-Thankfully, being exactly backwards, we just have to reflect it about a line perpendicular to the top-left corner. 
-
-> God let see where 
+But for me, in practice, it seems to work better the other way around:
+* serenity _is the result of_ coming to grips with things you can't control.
+* courage _is marked by_ willingness to just do things when you discover you can.
+* wisdom _is, more or less_, hard won experience at walking the line between those extremes.
