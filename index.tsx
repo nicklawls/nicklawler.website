@@ -1,4 +1,4 @@
-import { $, serve } from "bun";
+import { $, file, serve } from "bun";
 import * as marked from "marked";
 import { type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -105,7 +105,12 @@ function FaqPage() {
   );
 }
 
-const PATH_CSS_OUT = "/index.css" as const;
+const FILENAME_CSS_OUT = "index.css" as const;
+
+const promiseCSSBlob =
+  $`cat ${FILENAME_CSS_OUT} | bunx tailwindcss -i -`.blob();
+
+const PATH_CSS_OUT = `/${FILENAME_CSS_OUT}` as const;
 
 /** Render {@link title} and {@link body} into the right spots in the document */
 function app_shell({
@@ -143,45 +148,25 @@ interface Entry {
   title: string;
   date: Date;
   show: boolean;
-  markdown: string;
 }
-
-import metapost from "./entries/metapost.md" with { type: "text" };
-const promise_hello_world = marked.parse(hello_world);
-
-import hello_world from "./entries/hello-world.md" with { type: "text" };
-const promise_metapost = marked.parse(metapost);
-
-import backwards from "./entries/backwards.md" with { type: "text" };
-const promise_backwards = marked.parse(backwards);
 
 const ENTRIES_BY_SLUG = {
   "/hello-world": {
     title: "Hello World",
     date: new Date("7-4-2023"),
     show: false,
-    markdown: await promise_hello_world,
   },
   "/backwards": {
-    title: "Reflecting the Serenity Prayer",
+    title: "The Serenity Prayer is backwards",
     date: new Date("2-28-2025"),
     show: true,
-    markdown: await promise_backwards,
   },
   "/metapost": {
     title: "How to Build This Website",
     date: new Date("7-21-2024"),
     show: true,
-    markdown: await promise_metapost,
   },
 } as const satisfies { [slug: `/${string}`]: Entry };
-
-/** Type predicate infrence means that only the ones with show: true make it! */
-const ENTRIES_BY_DATE = Object.values(ENTRIES_BY_SLUG)
-  .filter((entry) => entry.show)
-  .sort((a, b) => a.date.getTime() - b.date.getTime());
-
-import css from "./index.css" with { type: "text" };
 
 const server = serve({
   hostname: "0.0.0.0",
@@ -195,51 +180,59 @@ const server = serve({
       // TODO: this is such a hack
       // Interem between here and plugin would be to compile css with
       // tailwind programatically and not shell out.
-      await $`echo ${css} | bunx tailwindcss -i -`.blob(),
+      await promiseCSSBlob,
       {
         headers: { "Content-Type": "text/css" },
       },
     ),
     ...Object.fromEntries(
-      Object.entries(ENTRIES_BY_SLUG)
-        .values()
-        // Not smart enough to infer a type predicate with nesting though
-        .filter(([, entry]) => entry.show)
-        .map(([slug, entry]) => [
-          slug,
-          new Response(
-            app_shell({
-              title: entry.title,
-              body: (
-                <div className="flex flex-col space-y-3">
-                  <Header title={entry.title} />
-                  <div>
-                    <time className="text-gray-500">
-                      {entry.date.toLocaleDateString("en-us", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </time>
-                    <div
-                      data-color-mode="auto"
-                      data-light-theme="light"
-                      data-dark-theme="dark"
-                    >
-                      <div
-                        className="mt-8 space-y-6"
-                        dangerouslySetInnerHTML={{ __html: entry.markdown }}
-                      />
+      await Promise.all(
+        Object.entries(ENTRIES_BY_SLUG)
+          .values()
+          // Not smart enough to infer a type predicate with nesting though
+          .filter((tuple) => tuple[1].show)
+          .map(async ([slug, entry]) => {
+            const markdown = await marked.parse(
+              await file(`./entries/${slug}.md`).text(),
+            );
+            // Read the file and parse it down here
+            return [
+              slug,
+              new Response(
+                app_shell({
+                  title: entry.title,
+                  body: (
+                    <div className="flex flex-col space-y-3">
+                      <Header title={entry.title} />
+                      <div>
+                        <time className="text-gray-500">
+                          {entry.date.toLocaleDateString("en-us", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </time>
+                        <div
+                          data-color-mode="auto"
+                          data-light-theme="light"
+                          data-dark-theme="dark"
+                        >
+                          <div
+                            className="mt-8 space-y-6"
+                            dangerouslySetInnerHTML={{ __html: markdown }}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  ),
+                }),
+                {
+                  headers: { "Content-Type": "text/html" },
+                },
               ),
-            }),
-            {
-              headers: { "Content-Type": "text/html" },
-            },
-          ),
-        ]),
+            ] as const;
+          }),
+      ),
     ),
     "/*": new Response(app_shell({ body: <p>404 not found</p> }), {
       headers: { "Content-Type": "text/html" },
