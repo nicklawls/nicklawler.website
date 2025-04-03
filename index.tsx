@@ -171,7 +171,7 @@ const ENTRIES_BY_SLUG = {
 const server = serve({
   hostname: "0.0.0.0",
   port: process.env["PORT"] ?? 3000,
-  development: process.env.NODE_ENV !== "production",
+  development: process.env['NODE_ENV'] !== "production",
   routes: {
     "/": new Response(app_shell({ body: <FaqPage /> }), {
       headers: { "Content-Type": "text/html" },
