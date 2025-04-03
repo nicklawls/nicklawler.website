@@ -159,12 +159,12 @@ const ENTRIES_BY_SLUG = {
   "/backwards": {
     title: "The Serenity Prayer is backwards",
     date: new Date("2-28-2025"),
-    show: true,
+    show: false,
   },
   "/metapost": {
     title: "How to Build This Website",
     date: new Date("7-21-2024"),
-    show: true,
+    show: false,
   },
 } as const satisfies { [slug: `/${string}`]: Entry };
 
