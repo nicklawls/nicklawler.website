@@ -135,7 +135,7 @@ function app_shell({
         <link href={PATH_CSS_OUT} rel="stylesheet" />
       </head>
       <body className="py-10 bg-peachyellow dark:bg-indigodye text-indigodye dark:text-peachyellow">
-        <div className="font-mono px-5 w-200 md:mx-auto md:w-[650px] md:p-0 flex flex-col space-y-10">
+        <div className="font-mono px-5 w-full md:max-w-[650px] md:mx-auto flex flex-col space-y-10">
           {body}
         </div>
       </body>
